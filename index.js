@@ -15,17 +15,9 @@ const storeRoute = require("./routes/store.route.js");
 const userRoute = require("./routes/user.route.js");
 const itemRoute = require("./routes/item.route.js");
 const transactionRoute = require("./routes/transaction.route.js");
-const rateLimit = require("express-rate-limit");
 const {redisClient} = require("./utils/redis.js");
 const sqlInjectionFilter = require("./middlewares/sql-injection.middleware.js");
 
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 Menit
-	limit: 100, // Limit setiap IP ke 100 Request setiap 15 Menit
-	message: "Too many requests, please try again later.",
-});
-
-app.use(limiter);
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
