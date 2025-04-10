@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    app:
+        build: .
+        container_name: express-app
+        restart: unless-stopped
+        ports:
+            - "3000:3000"
+        environment:
+            - PORT=3000
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - REDIS_PASSWORD=
+            - REDIS_TLS=false
+            - PG_CONNECTION_STRING=${PG_CONNECTION_STRING}
+            - CLOUDINARY_URL=${CLOUDINARY_URL}
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        depends_on:
+            - redis
+        networks:
+            - app-network
+
+    redis:
+        image: redis:alpine
+        container_name: redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis-data:/data
+        networks:
+            - app-network
+
+volumes:
+    redis-data:
+
+networks:
+    app-network:
+        driver: bridge
