@@ -6,31 +6,24 @@
 		"dotenv": "^16.4.7",
 		"express": "^4.21.2",
 		"express-rate-limit": "^7.5.0",
-		"ioredis": "^5.6.0",
+		"ioredis": "^5.6.1",
 		"jsonwebtoken": "^9.0.2",
-		"morgan": "^1.10.0",
 		"multer": "^1.4.5-lts.1",
-		"nodemon": "^3.1.9",
 		"pg": "^8.13.3",
-		"redis": "^4.7.0",
-		"stream": "^0.0.3"
+		"redis": "^4.7.0"
 	},
 	"name": "tp5",
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon index.js",
-		"start:prod": "node index.js",
-		"docker:build": "docker-compose build",
-		"docker:up": "docker-compose up -d",
-		"docker:down": "docker-compose down",
-		"docker:logs": "docker-compose logs -f",
-		"docker:prod:build": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml build",
-		"docker:prod:up": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
-		"docker:prod:down": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down"
+		"start": "node index.js",
+		"dev": "nodemon index.js",
+		"docker:build": "docker-compose -f docker-compose.prod.yml build",
+		"docker:up": "docker-compose -f docker-compose.prod.yml up -d",
+		"docker:down": "docker-compose -f docker-compose.prod.yml down",
+		"docker:logs": "docker-compose -f docker-compose.prod.yml logs -f"
 	},
 	"author": "",
 	"license": "ISC",
-	"description": "Express application with Redis caching"
+	"description": "Express application with PostgreSQL database"
 }

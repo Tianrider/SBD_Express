@@ -10,7 +10,7 @@ console.log("Connecting to Redis at:", {
 const redisClient = new Redis({
 	host: process.env.REDIS_HOST || "localhost",
 	port: process.env.REDIS_PORT || 6379,
-	password: null,
+	password: process.env.REDIS_PASSWORD || null,
 	connectTimeout: 10000,
 });
 

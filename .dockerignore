@@ -1,16 +1,18 @@
-# Node modules and dependencies
+# Dependencies
 node_modules
 npm-debug.log
+package-lock.json
 
-# Environment variables
+# Environment
 .env
 .env.*
+!.env.example
 
-# Git files
+# Git
 .git
 .gitignore
 
-# Docker files
+# Docker
 .dockerignore
 docker-compose.yml
 docker-compose.override.yml
@@ -20,19 +22,26 @@ docker-compose.prod.yml
 logs
 *.log
 
-# Documentation and readme files
+# Documentation
 README.md
 docs
+*.md
 
-# Testing files
+# Testing
 test
 tests
 coverage
 
-# OS specific files
+# OS
 .DS_Store
 Thumbs.db
 
-# Project specific files that shouldn't be in the Docker image
+# Project specific
 *.zip
-*.pdf 
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx 

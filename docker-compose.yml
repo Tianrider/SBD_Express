@@ -23,17 +23,6 @@ services:
         networks:
             - app-network
 
-    redis:
-        image: redis:alpine
-        container_name: redis
-        restart: unless-stopped
-        ports:
-            - "6379:6379"
-        volumes:
-            - redis-data:/data
-        networks:
-            - app-network
-
 volumes:
     redis-data:
 

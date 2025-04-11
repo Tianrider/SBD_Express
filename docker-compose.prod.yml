@@ -3,18 +3,24 @@ version: "3.8"
 services:
     # Production configuration for Express app
     app:
-        image: ${DOCKER_REGISTRY:-localhost}/express-app:${TAG:-latest}
-        build:
-            context: .
-            args:
-                - NODE_ENV=production
-        restart: always
+        build: .
+        restart: unless-stopped
+        ports:
+            - "3000:3000"
         environment:
+            - PORT=3000
+            - PG_CONNECTION_STRING=${PG_CONNECTION_STRING}
+            - CLOUDINARY_URL=${CLOUDINARY_URL}
+            - JWT_SECRET=${JWT_SECRET}
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT=${REDIS_PORT}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
+            - JWT_EXPIRY=24h
             - NODE_ENV=production
         # Don't mount volumes in production
         volumes: []
         deploy:
-            replicas: ${APP_REPLICAS:-2}
+            replicas: ${APP_REPLICAS:-1}
             update_config:
                 parallelism: 1
                 delay: 10s
@@ -22,44 +28,6 @@ services:
             restart_policy:
                 condition: on-failure
                 max_attempts: 3
-        healthcheck:
-            test:
-                [
-                    "CMD",
-                    "wget",
-                    "--spider",
-                    "-q",
-                    "http://localhost:3000/health",
-                ]
-            interval: 30s
-            timeout: 10s
-            retries: 3
-            start_period: 40s
-
-    redis:
-        image: redis:alpine
-        command:
-            [
-                "redis-server",
-                "--appendonly",
-                "yes",
-                "--requirepass",
-                "${REDIS_PASSWORD:-}",
-            ]
-        restart: always
-        volumes:
-            - redis-data:/data
-        deploy:
-            replicas: 1
-            restart_policy:
-                condition: on-failure
-                max_attempts: 3
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            interval: 30s
-            timeout: 5s
-            retries: 3
-            start_period: 10s
 
 volumes:
     redis-data:
