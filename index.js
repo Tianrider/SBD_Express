@@ -4,6 +4,8 @@ const cors = require("cors");
 const corsOptions = {
 	origin: "*",
 	methods: ["GET", "POST", "PUT", "DELETE"],
+	credentials: true,
+	allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 const port = process.env.PORT || 3000;
