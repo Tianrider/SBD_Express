@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const corsOptions = {
-	origin: "https://os.netlabdte.com",
+	origin: "*",
 	methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
