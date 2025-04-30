@@ -2,10 +2,15 @@ const express = require("express");
 const cors = require("cors");
 
 const corsOptions = {
-	origin: "http://localhost:5173",
-	methods: ["GET", "POST", "PUT", "DELETE"],
+	origin:
+		process.env.NODE_ENV === "production"
+			? ["https://yourdomain.com", "http://localhost:5173"]
+			: "http://localhost:5173",
+	methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 	credentials: true,
 	allowedHeaders: ["Content-Type", "Authorization"],
+	preflightContinue: false,
+	optionsSuccessStatus: 204,
 };
 
 const port = process.env.PORT || 3000;
@@ -32,6 +37,21 @@ const db = require("./database/pg.database");
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(sqlInjectionFilter);
+
+// Normalize URL paths to prevent double-slash issues
+app.use((req, res, next) => {
+	if (req.path.length > 1 && req.path.indexOf("//") !== -1) {
+		const normalizedPath = req.path.replace(/\/+/g, "/");
+		return res.redirect(
+			301,
+			normalizedPath +
+				(req.url.includes("?")
+					? req.url.substring(req.url.indexOf("?"))
+					: "")
+		);
+	}
+	next();
+});
 
 // Health check endpoint
 app.get("/health", async (req, res) => {
